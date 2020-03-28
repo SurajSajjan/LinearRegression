@@ -1,0 +1,60 @@
+---
+title: "AMOD 5240H DataSet Analysis"
+author: "Suraj Suresh Sajjan"
+date: "November 21st, 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+```
+
+```{r}
+
+library(tidyverse)
+lego_data <- read.csv(file = "D:/AMOD/AMOD-5240H-A-Statistical aspects of modeling/dataset project/lego_sets.csv", header = TRUE, sep = ",")
+
+NROW(na.omit(lego_data))
+
+lego_data_marvel <- lego_data %>% na.omit() %>% filter(country == "CA" & star_rating >= 4.5)
+plot(lego_data_marvel$list_price, lego_data_marvel$piece_count)
+
+nrow(lego_data_marvel)
+
+str(lego_data_marvel)
+
+plot(lego_data_marvel$piece_count,lego_data_marvel$list_price)
+abline(lm(lego_data_marvel$list_price ~ lego_data_marvel$piece_count),cex = 1.3,pch = 16,xlab = "Salinity",ylab = "Temperature")
+
+lego_model <- lm(lego_data_marvel$list_price ~ lego_data_marvel$piece_count)
+lego_model_log <- lm(log(lego_data_marvel$list_price) ~ log(lego_data_marvel$piece_count))
+
+summary(lego_model_log)
+summary(lego_model)
+cor(log(lego_data_marvel$list_price), log(lego_data_marvel$piece_count))
+
+plot(lego_model)
+plot(lego_model_log)
+
+data<- data.frame(z,y)
+ggplot(data, aes(x=z, y=y))+
+    geom_point() +    
+    geom_smooth(method=lm) 
+
+qqnorm(log(lego_data_marvel$list_price))
+qqline(log(lego_data_marvel$list_price))
+qqnorm(log(lego_data_marvel$piece_count))
+qqline(log(lego_data_marvel$piece_count))
+
+
+qqnorm(lego_data_marvel$list_price)
+qqline(lego_data_marvel$list_price)
+qqnorm(lego_data_marvel$piece_count)
+qqline(lego_data_marvel$piece_count)
+
+hist(lego_data$list_price)
+hist(lego_data$piece_count)
+
+hist(log(lego_data_marvel$list_price))
+hist(log(lego_data_marvel$piece_count))
+```
